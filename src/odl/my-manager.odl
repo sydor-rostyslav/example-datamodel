@@ -1,0 +1,38 @@
+#!/usr/bin/amxrt
+
+%config {
+    name = "my-manager";
+    import-dbg = false;
+
+    definition_file = "${name}-definition.odl";
+    save_file = "${rw_data_path/${name}/${name}/${name}.odl";
+
+    // Use ODL persistent storage
+    storage-path = "${rw_data_path}/${name}/";
+    %global odl = {
+        dm-save = true,
+        dm-save-on-changed = true,
+        dm-save-delay = 1000,
+        dm-defaults = "${name}_defaults/",
+        directory = "${storage-path}/odl"
+    };
+
+    import-dirs = [
+        ".",
+        "${prefix}${plugin-dir}/${name}",
+        "${prefix}${plugin-dir}/modules",
+        "${prefix}/usr/lib/amx/${name}",
+        "${prefix}/usr/lib/amx/modules"
+    ];
+
+    mod-dir = "${prefix}/usr/lib/amx/${name}/modules";
+}
+
+import "${name}.so" as "${name}";
+import "mod-dmext.so";
+
+include "${definition_file}";
+
+%define {
+    entry-point "${name}".my_manager_main;
+}

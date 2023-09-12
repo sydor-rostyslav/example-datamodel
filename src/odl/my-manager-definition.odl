@@ -1,0 +1,14 @@
+%define {
+    %persistent object Obj {
+        %persistent object Child[] {
+            %persistent string conf {
+                default "conf1";
+            }
+        }
+        %read-only uint32 stat = 0;
+    }
+}
+
+%populate {
+    on event "dm:instance-added" call add_stat;
+}
